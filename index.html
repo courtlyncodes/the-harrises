@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Mea+Culpa&display=swap" rel="stylesheet">
 <style>
   :root {
     --black:        #0E0E0E;
@@ -108,27 +109,27 @@
   }
   .hero-eyebrow {
     font-size: 0.57rem; font-weight: 400; letter-spacing: 0.45em; text-transform: uppercase;
-    color: var(--gold); margin-bottom: 1.8rem;
+    color: var(--gold-light); margin-bottom: 1.8rem;
     animation: fadeUp 1.4s 0.3s both;
   }
   .hero-names {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(2rem, 8vw, 6rem);
+    font-family: 'Mea Culpa', serif;
+    font-size: clamp(3rem, 9vw, 7rem);
     font-weight: 400; line-height: 1.05; color: var(--ivory);
     animation: fadeUp 1.4s 0.5s both;
   }
   .hero-names .script-and {
     display: block; font-style: italic; font-size: 0.5em;
-    color: var(--gold); margin: 0.2em 0;
+    color: var(--gold-light); margin: 0.2em 0;
   }
   .hero-rule {
     width: 1px; height: 50px;
-    background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+    background: linear-gradient(to bottom, transparent, var(--gold-light), transparent);
     margin: 1.8rem auto; animation: fadeUp 1.4s 0.7s both;
   }
   .hero-date {
-    font-size: 0.6rem; font-weight: 300; letter-spacing: 0.35em; text-transform: uppercase;
-    color: rgba(250,248,243,0.65); animation: fadeUp 1.4s 0.8s both;
+    font-size: 0.75rem; font-weight: 300; letter-spacing: 0.35em; text-transform: uppercase;
+    color: var(--gold-light); animation: fadeUp 1.4s 0.8s both;
   }
   .hero-hashtag {
     margin-top: 0.7rem; font-family: 'Playfair Display', serif;
@@ -438,7 +439,7 @@
 
   <!-- Text overlay — sits above all slides -->
   <div class="hero-overlay">
-    <p class="hero-eyebrow">You + Me = Forever &nbsp;·&nbsp; Future Mr. & Mrs. Harris</p>
+    <p class="hero-eyebrow">Future Mr. & Mrs. Harris</p>
     <h1 class="hero-names">
       Tomneshia
       <span class="script-and">&</span>
@@ -544,7 +545,7 @@
         <span class="deadline-badge">RSVP by March 1, 2027</span>
       </div>
       <div class="fade-up">
-        <form class="rsvp-form" id="rsvpForm">
+        <form class="rsvp-form" id="rsvpForm" method="POST" onsubmit="handleSubmit(event)">
           <div class="form-row">
             <div class="form-group"><label>First Name</label><input type="text" name="firstName" required placeholder="First name"/></div>
             <div class="form-group"><label>Last Name</label><input type="text" name="lastName" required placeholder="Last name"/></div>
@@ -558,14 +559,6 @@
               <option value="no">Regretfully declines</option>
             </select>
           </div>
-          <div class="form-group" id="guestGroup" style="display:none">
-            <label>Number of guests (including yourself)</label>
-            <select name="guestCount">
-              <option value="1">1 — Just me</option>
-              <option value="2">2 — Me + 1</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-            </select>
           </div>
           <button type="submit" class="btn-submit">Send RSVP</button>
         </form>
@@ -762,6 +755,7 @@
   document.getElementById('attendingSelect').addEventListener('change', function() {
     document.getElementById('guestGroup').style.display = this.value === 'yes' ? 'flex' : 'none';
   });
+  const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyE_yvFFC0rEMC3m5wUVHfhXULz8AWraheHfy0vizjKVMXxkdQkDzEU7nM1U6SGDApX/exec';
 
   // RSVP submit
   document.getElementById('rsvpForm').addEventListener('submit', async function(e) {
@@ -771,17 +765,16 @@
       timestamp: new Date().toISOString(),
       firstName: f.firstName.value, lastName: f.lastName.value,
       email: f.email.value, attending: f.attending.value,
-      guestCount: f.guestCount?.value || 'N/A', dietary: f.dietary.value || 'None'
+      guestCount: f.guestCount?.value || 'N/A'
     };
-    const SHEETS_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+    const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyE_yvFFC0rEMC3m5wUVHfhXULz8AWraheHfy0vizjKVMXxkdQkDzEU7nM1U6SGDApX/exec';
     try {
-      if (SHEETS_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
         await fetch(SHEETS_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
-      }
     } catch(err) {}
     f.style.display = 'none';
     document.getElementById('formSuccess').style.display = 'block';
   });
+
 
   // FAQ accordion
   document.querySelectorAll('.faq-q').forEach(btn => {
