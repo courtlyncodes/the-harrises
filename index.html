@@ -766,7 +766,7 @@
       email: f.email.value, attending: f.attending.value,
       guestCount: f.guestCount?.value || 'N/A'
     };
-    const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyE_yvFFC0rEMC3m5wUVHfhXULz8AWraheHfy0vizjKVMXxkdQkDzEU7nM1U6SGDApX/exec';
+    const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwvL6hrzTmhZ2RsUr9UgNZdP1uhX07BN7rNgilYzQ5j_GJIDVuhfxlcCnfXoLScVzlX/exec';
     try {
         await fetch(SHEETS_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
     } catch(err) {}
