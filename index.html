@@ -545,7 +545,7 @@
         <span class="deadline-badge">RSVP by March 1, 2027</span>
       </div>
       <div class="fade-up">
-        <form class="rsvp-form" id="rsvpForm" method="POST" onsubmit="handleSubmit(event)">
+        <form class="rsvp-form" id="rsvpForm">
           <div class="form-row">
             <div class="form-group"><label>First Name</label><input type="text" name="firstName" required placeholder="First name"/></div>
             <div class="form-group"><label>Last Name</label><input type="text" name="lastName" required placeholder="Last name"/></div>
@@ -755,7 +755,6 @@
   document.getElementById('attendingSelect').addEventListener('change', function() {
     document.getElementById('guestGroup').style.display = this.value === 'yes' ? 'flex' : 'none';
   });
-  const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyE_yvFFC0rEMC3m5wUVHfhXULz8AWraheHfy0vizjKVMXxkdQkDzEU7nM1U6SGDApX/exec';
 
   // RSVP submit
   document.getElementById('rsvpForm').addEventListener('submit', async function(e) {
