@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Tomneshia & Dominique | #2Hands2Harris</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --black:        #0E0E0E;
+    --off-black:    #1A1A1A;
+    --ivory:        #FAF8F3;
+    --warm-white:   #F5F2EB;
+    --gold:         #C9A84C;
+    --gold-light:   #E2C97E;
+    --clay:         #C58968;
+    --soft-peach:   #CDB7A8;
+    --olive:        #8A8965;
+    --russet:       #976239;
+    --sage:         #BCC5B3;
+    --text-dark:    #1A1A1A;
+    --text-mid:     #5A5040;
+    --text-light:   #9A8E80;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Montserrat', sans-serif; background: var(--ivory); color: var(--text-dark); overflow-x: hidden; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.1rem 3rem;
+    background: rgba(250,248,243,0.96);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+    transition: box-shadow 0.3s;
+  }
+  nav.scrolled { box-shadow: 0 2px 24px rgba(0,0,0,0.07); }
+  .nav-logo { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.2rem; color: var(--off-black); }
+  .nav-logo span { color: var(--gold); }
+  .nav-links { display: flex; gap: 1.8rem; list-style: none; }
+  .nav-links a {
+    text-decoration: none; font-size: 0.57rem; font-weight: 500;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-mid);
+    transition: color 0.25s; position: relative;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: -3px; left: 0; right: 0;
+    height: 1px; background: var(--gold); transform: scaleX(0); transition: transform 0.25s;
+  }
+  .nav-links a:hover { color: var(--off-black); }
+  .nav-links a:hover::after { transform: scaleX(1); }
+  .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
+  .hamburger span { display: block; width: 22px; height: 1.5px; background: var(--off-black); }
+  .mobile-menu {
+    display: none; position: fixed; inset: 0; z-index: 199;
+    background: var(--ivory); flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.25em; text-transform: uppercase; text-decoration: none; color: var(--text-dark); }
+  .mobile-close { position: absolute; top: 1.5rem; right: 2rem; background: none; border: none; font-size: 1.6rem; cursor: pointer; color: var(--text-dark); }
+
+  /* ── CAROUSEL HERO ── */
+  #hero {
+    position: relative; width: 100%; height: 100vh; min-height: 600px;
+    overflow: hidden; background: var(--black);
+  }
+  .carousel-track {
+    display: flex; height: 100%;
+    transition: transform 1.2s cubic-bezier(0.77, 0, 0.18, 1);
+  }
+  .carousel-slide {
+    min-width: 100%; height: 100%; position: relative;
+  }
+  .slide-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right center;
+  display: block;
+}
+  .carousel-slide.active .slide-bg { transform: scale(1); }
+
+  /* Placeholder slides with cinematic gradients — swap with real photos via background-image */
+  .slide-1 .slide-bg { background: linear-gradient(135deg, #0E0E0E 0%, #2A1C0A 50%, #1A1208 100%); }
+  .slide-2 .slide-bg { background: linear-gradient(135deg, #1C1208 0%, #0E0E0E 50%, #2A1A0A 100%); }
+  .slide-3 .slide-bg { background: linear-gradient(135deg, #2A1A0A 0%, #1A1208 50%, #0E0E0E 100%); }
+  .slide-4 .slide-bg { background: linear-gradient(135deg, #0E0E0E 0%, #1C1208 50%, #2A1C0A 100%); }
+  .slide-5 .slide-bg { background: linear-gradient(135deg, #1A1208 0%, #2A1C0A 50%, #0E0E0E 100%); }
+
+  /* Dark overlay for text legibility */
+  .carousel-slide::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(to bottom, rgba(14,14,14,0.35) 0%, rgba(14,14,14,0.55) 100%);
+    z-index: 1;
+  }
+
+  /* Centered hero text overlay */
+  .hero-overlay {
+    position: absolute; inset: 0; z-index: 2;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 2rem;
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    font-size: 0.57rem; font-weight: 400; letter-spacing: 0.45em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1.8rem;
+    animation: fadeUp 1.4s 0.3s both;
+  }
+  .hero-names {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 9vw, 7rem);
+    font-weight: 400; line-height: 1.05; color: var(--ivory);
+    animation: fadeUp 1.4s 0.5s both;
+  }
+  .hero-names .script-and {
+    display: block; font-style: italic; font-size: 0.5em;
+    color: var(--gold); margin: 0.2em 0;
+  }
+  .hero-rule {
+    width: 1px; height: 50px;
+    background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+    margin: 1.8rem auto; animation: fadeUp 1.4s 0.7s both;
+  }
+  .hero-date {
+    font-size: 0.6rem; font-weight: 300; letter-spacing: 0.35em; text-transform: uppercase;
+    color: rgba(250,248,243,0.65); animation: fadeUp 1.4s 0.8s both;
+  }
+  .hero-hashtag {
+    margin-top: 0.7rem; font-family: 'Playfair Display', serif;
+    font-style: italic; font-size: 1.1rem; color: var(--gold-light);
+    animation: fadeUp 1.4s 1s both;
+  }
+
+  /* Corner brackets */
+  .hero-corner {
+    position: absolute; width: 60px; height: 60px;
+    border-color: rgba(201,168,76,0.35); border-style: solid; z-index: 3;
+  }
+  .hero-corner.tl { top: 5rem; left: 2rem; border-width: 1px 0 0 1px; }
+  .hero-corner.tr { top: 5rem; right: 2rem; border-width: 1px 1px 0 0; }
+  .hero-corner.bl { bottom: 2rem; left: 2rem; border-width: 0 0 1px 1px; }
+  .hero-corner.br { bottom: 2rem; right: 2rem; border-width: 0 1px 1px 0; }
+
+  /* Carousel dots */
+  .carousel-dots {
+    position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+    z-index: 4; display: flex; gap: 0.5rem;
+  }
+  .dot {
+    width: 24px; height: 2px; background: rgba(201,168,76,0.3);
+    cursor: pointer; transition: background 0.3s, width 0.3s;
+    border: none; padding: 0;
+  }
+  .dot.active { background: var(--gold); width: 40px; }
+
+  /* Scroll hint */
+  .scroll-hint {
+    position: absolute; bottom: 2.5rem; right: 2.5rem; z-index: 4;
+    display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+    animation: fadeUp 1.4s 1.4s both;
+  }
+  .scroll-hint span { font-size: 0.48rem; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(201,168,76,0.4); }
+  .scroll-line { width: 1px; height: 38px; background: linear-gradient(to bottom, rgba(201,168,76,0.5), transparent); animation: scrollDrop 2.2s ease-in-out infinite; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes scrollDrop {
+    0% { opacity: 0; transform: scaleY(0); transform-origin: top; }
+    50% { opacity: 1; transform: scaleY(1); }
+    100% { opacity: 0; transform: scaleY(0); transform-origin: bottom; }
+  }
+
+  /* ── SHARED ── */
+  section { padding: 6rem 2rem; }
+  .container { max-width: 1080px; margin: 0 auto; }
+  .label { display: block; font-size: 0.55rem; font-weight: 500; letter-spacing: 0.38em; text-transform: uppercase; color: var(--clay); margin-bottom: 0.9rem; }
+  .label.light { color: var(--gold); }
+  .heading { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4.5vw, 3.2rem); font-weight: 400; line-height: 1.2; color: var(--text-dark); }
+  .heading em { font-style: italic; color: var(--clay); }
+  .heading.light { color: var(--ivory); }
+  .heading.light em { color: var(--gold-light); }
+  .gold-bar { width: 48px; height: 2px; background: var(--gold); margin: 1.5rem 0; }
+  .gold-bar.center { margin: 1.5rem auto; }
+  .body-text { font-size: 0.87rem; font-weight: 300; line-height: 2; color: var(--text-mid); margin-bottom: 1rem; }
+  .body-text strong { font-weight: 500; color: var(--text-dark); }
+  .fade-up { opacity: 0; transform: translateY(20px); transition: opacity 0.75s ease, transform 0.75s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── STORY ── */
+  #story { background: var(--ivory); }
+  .story-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+  .story-img-wrap { position: relative; }
+  .story-img-frame {
+    width: 100%; aspect-ratio: 3/4;
+    background: linear-gradient(160deg, var(--off-black) 0%, #2A1F14 100%);
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+  }
+  .story-img-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .story-img-placeholder { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1rem; color: rgba(201,168,76,0.35); }
+  .story-img-wrap::after {
+    content: ''; position: absolute; bottom: -1.2rem; right: -1.2rem;
+    width: 60%; height: 60%; border: 1px solid rgba(201,168,76,0.28); z-index: -1;
+  }
+  .story-quote { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.1rem; color: var(--clay); margin-top: 1.5rem; padding-left: 1.2rem; border-left: 2px solid var(--gold); }
+
+  /* ── DETAILS ── */
+  #details { background: var(--off-black); position: relative; overflow: hidden; }
+  #details::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(to right, transparent, var(--gold), transparent); }
+  #details::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px; background: linear-gradient(to right, transparent, var(--gold), transparent); }
+  .details-header { text-align: center; margin-bottom: 4rem; }
+  .details-header .gold-bar { margin: 1.5rem auto; }
+  .event-card-single {
+    border: 1px solid rgba(201,168,76,0.2); padding: 3.5rem;
+    position: relative; overflow: hidden;
+    background: rgba(255,255,255,0.02);
+    max-width: 600px; margin: 0 auto;
+    transition: border-color 0.3s;
+  }
+  .event-card-single:hover { border-color: rgba(201,168,76,0.4); }
+  .event-number { font-family: 'Playfair Display', serif; font-size: 7rem; font-weight: 700; color: rgba(201,168,76,0.06); position: absolute; top: 0.5rem; right: 1.5rem; line-height: 1; pointer-events: none; }
+  .event-tag { font-size: 0.55rem; font-weight: 500; letter-spacing: 0.32em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.8rem; display: block; }
+  .event-name { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 400; color: var(--ivory); margin-bottom: 2rem; }
+  .event-rows { display: flex; flex-direction: column; gap: 1rem; }
+  .event-row { display: flex; gap: 1rem; align-items: flex-start; }
+  .event-icon { color: var(--clay); font-size: 0.8rem; margin-top: 2px; flex-shrink: 0; }
+  .event-row-text { font-size: 0.73rem; line-height: 1.6; color: rgba(250,248,243,0.5); font-weight: 300; }
+  .event-row-text strong { color: var(--ivory); font-weight: 400; display: block; margin-bottom: 0.1rem; }
+
+  /* ── ATTIRE ── */
+  #attire { background: var(--warm-white); }
+  .attire-inner { text-align: center; }
+  .attire-inner .gold-bar { margin: 1.5rem auto; }
+  .attire-desc { font-size: 0.85rem; font-weight: 300; line-height: 2; color: var(--text-mid); max-width: 560px; margin: 0 auto 3rem; }
+  .palette-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 1.5rem; margin-bottom: 2rem; }
+  .swatch-item { display: flex; flex-direction: column; align-items: center; gap: 0.6rem; }
+  .swatch { width: 68px; height: 88px; border-radius: 34px 34px 0 0; box-shadow: 0 4px 18px rgba(0,0,0,0.1); transition: transform 0.25s; }
+  .swatch:hover { transform: translateY(-4px); }
+  .swatch-name { font-size: 0.52rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-light); }
+  .sw-soft-peach { background: #CDB7A8; border: 1px solid rgba(0,0,0,0.05); }
+  .sw-clay       { background: #C58968; }
+  .sw-sage       { background: #BCC5B3; border: 1px solid rgba(0,0,0,0.05); }
+  .sw-olive      { background: #8A8965; }
+  .sw-russet     { background: #976239; }
+  .attire-note { display: inline-block; font-size: 0.6rem; font-weight: 300; letter-spacing: 0.12em; color: var(--text-light); border-top: 1px solid rgba(201,168,76,0.3); padding-top: 0.8rem; margin-top: 0.3rem; }
+  .attire-note em { color: var(--clay); font-style: italic; font-family: 'Playfair Display', serif; }
+
+  /* ── RSVP ── */
+  #rsvp { background: var(--ivory); }
+  .rsvp-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 5rem; align-items: start; }
+  .deadline-badge { display: inline-block; margin-top: 1.2rem; padding: 0.65rem 1.3rem; border: 1px solid var(--clay); font-size: 0.57rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--clay); }
+  .rsvp-form { display: flex; flex-direction: column; gap: 1.1rem; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+  .form-group label { font-size: 0.55rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-light); }
+  .form-group input, .form-group select, .form-group textarea {
+    background: #fff; border: 1px solid rgba(168,152,128,0.25);
+    padding: 0.88rem 1rem; font-family: 'Montserrat', sans-serif;
+    font-size: 0.8rem; font-weight: 300; color: var(--text-dark);
+    outline: none; transition: border-color 0.25s; border-radius: 0; -webkit-appearance: none;
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--gold); }
+  .form-group textarea { resize: vertical; min-height: 80px; }
+  .btn-submit { align-self: flex-start; background: var(--off-black); color: #F5E8C8; border: none; padding: 1rem 2.5rem; font-family: 'Montserrat', sans-serif; font-size: 0.62rem; font-weight: 500; letter-spacing: 0.25em; text-transform: uppercase; cursor: pointer; transition: background 0.3s; }
+  .btn-submit:hover { background: var(--clay); }
+  .form-success { display: none; text-align: center; padding: 3.5rem 2rem; border: 1px solid rgba(201,168,76,0.3); background: #fff; }
+  .form-success h3 { font-family: 'Playfair Display', serif; font-style: italic; font-size: 2rem; font-weight: 400; color: var(--off-black); margin-bottom: 0.6rem; }
+  .form-success p { font-size: 0.8rem; font-weight: 300; color: var(--text-mid); }
+
+  /* ── WEDDING PARTY ── */
+  #party { background: var(--off-black); }
+  .party-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; margin-top: 3.5rem; }
+  .party-col-title {
+    font-size: 0.58rem; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1.8rem; padding-bottom: 0.8rem;
+    border-bottom: 1px solid rgba(201,168,76,0.15); display: block;
+  }
+  .party-list { list-style: none; display: flex; flex-direction: column; gap: 0; }
+  .party-list li {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 0.9rem 0; border-bottom: 1px solid rgba(201,168,76,0.07);
+  }
+  .party-list li:last-child { border-bottom: none; }
+  .party-person { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 400; color: var(--ivory); }
+  .party-title-role { font-size: 0.52rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(201,168,76,0.5); }
+  .party-title-role.honor { color: var(--gold); }
+
+  /* ── FAQ ── */
+  #faq { background: var(--warm-white); }
+  .faq-list { margin-top: 3rem; display: flex; flex-direction: column; gap: 0; }
+  .faq-item { border-bottom: 1px solid rgba(168,152,128,0.2); }
+  .faq-item:first-child { border-top: 1px solid rgba(168,152,128,0.2); }
+  .faq-q {
+    width: 100%; background: none; border: none; text-align: left;
+    padding: 1.5rem 0; cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+  }
+  .faq-q-text { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 400; color: var(--text-dark); }
+  .faq-icon { font-size: 1.2rem; color: var(--gold); flex-shrink: 0; transition: transform 0.3s; font-style: normal; }
+  .faq-item.open .faq-icon { transform: rotate(45deg); }
+  .faq-a { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.3s ease; }
+  .faq-item.open .faq-a { max-height: 400px; }
+  .faq-a p { font-size: 0.84rem; font-weight: 300; line-height: 1.9; color: var(--text-mid); padding-bottom: 1.5rem; }
+
+  /* ── REGISTRY ── */
+  #registry { background: var(--ivory); text-align: center; }
+  #registry .gold-bar { margin: 1.5rem auto; }
+  .registry-sub { font-size: 0.85rem; font-weight: 300; line-height: 2; color: var(--text-mid); max-width: 500px; margin: 0 auto 2.5rem; }
+  .registry-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn-reg { display: inline-block; padding: 0.95rem 2.2rem; border: 1px solid var(--off-black); font-size: 0.62rem; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; text-decoration: none; color: var(--off-black); transition: all 0.3s; }
+  .btn-reg:hover, .btn-reg.primary { background: var(--off-black); color: #F5E8C8; }
+  .btn-reg.primary:hover { background: var(--clay); border-color: var(--clay); }
+
+  /* ── TRAVEL ── */
+  #travel { background: var(--warm-white); }
+  .travel-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 2rem; margin-top: 3rem; }
+  .travel-card { background: #fff; padding: 2.5rem; border-bottom: 2px solid transparent; box-shadow: 0 1px 12px rgba(0,0,0,0.05); transition: border-color 0.3s, box-shadow 0.3s; }
+  .travel-card:hover { border-bottom-color: var(--gold); box-shadow: 0 4px 24px rgba(0,0,0,0.09); }
+  .travel-icon { font-size: 1.4rem; margin-bottom: 1.1rem; display: block; }
+  .travel-card h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 400; color: var(--text-dark); margin-bottom: 0.8rem; }
+  .travel-card p { font-size: 0.78rem; font-weight: 300; line-height: 1.85; color: var(--text-mid); }
+
+  /* ── GALLERY ── */
+  #gallery { background: var(--off-black); padding-bottom: 6rem; }
+  .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-top: 3rem; }
+  .g-item { overflow: hidden; position: relative; aspect-ratio: 1; cursor: pointer; }
+  .g-item.wide { grid-column: span 2; aspect-ratio: 2/1; }
+  .g-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease; }
+  .g-item:hover img { transform: scale(1.04); }
+  .g-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.8rem; color: rgba(201,168,76,0.18); transition: transform 0.5s ease; }
+  .g-item:hover .g-placeholder { transform: scale(1.04); }
+  .g1 { background: linear-gradient(145deg, #1A1006, #2A1C08); }
+  .g2 { background: linear-gradient(145deg, #140E04, #1E1408); }
+  .g3 { background: linear-gradient(145deg, #0E0E0E, #1A1410); }
+  .g4 { background: linear-gradient(145deg, #1C1208, #0E0C08); }
+  .g5 { background: linear-gradient(145deg, #120E06, #201608); }
+  .gallery-caption { text-align: center; margin-top: 2rem; font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.9rem; color: rgba(201,168,76,0.28); }
+
+  /* ── FOOTER ── */
+  footer { background: var(--black); padding: 4rem 2rem; text-align: center; border-top: 1px solid rgba(201,168,76,0.1); }
+  .footer-rule { width: 55px; height: 1px; background: var(--gold); margin: 0 auto 2rem; }
+  .footer-names { font-family: 'Playfair Display', serif; font-style: italic; font-size: 2.1rem; font-weight: 400; color: var(--ivory); margin-bottom: 0.5rem; }
+  .footer-hash { font-size: 0.57rem; font-weight: 400; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 2rem; }
+  .footer-copy { font-size: 0.52rem; font-weight: 300; letter-spacing: 0.15em; color: rgba(250,248,243,0.16); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 820px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .hero-corner { display: none; }
+    .story-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .story-img-wrap::after { display: none; }
+    .rsvp-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .form-row { grid-template-columns: 1fr; }
+    .party-cols { grid-template-columns: 1fr; gap: 3rem; }
+    section { padding: 4rem 1.5rem; }
+  }
+  @media (max-width: 520px) {
+    .gallery-grid { grid-template-columns: 1fr 1fr; }
+    .g-item.wide { grid-column: span 2; }
+    .swatch { width: 55px; height: 70px; }
+    .hero-names { font-size: 2.8rem; }
+}
+/* THE FIX FOR MOBILE: Stop the cropping entirely on phones */
+@media (max-width: 768px) {
+  .slide-img {
+    height: auto; /* Lets the image height be natural so nothing is cut off */
+    max-height: 70vh; 
+    object-fit: contain; /* SHOWS THE ENTIRE IMAGE without any cropping */
+    background-color: #000; /* Adds a black background if the photo doesn't fill the whole width */
+  }
+  
+  #hero {
+    height: auto;
+    min-height: 400px;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <div class="nav-logo">T <span>&</span> D</div>
+  <ul class="nav-links">
+    <li><a href="#story">Our Story</a></li>
+    <li><a href="#details">Details</a></li>
+    <li><a href="#attire">Attire</a></li>
+    <li><a href="#rsvp">RSVP</a></li>
+    <li><a href="#party">Wedding Party</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#registry">Registry</a></li>
+    <li><a href="#travel">Travel</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+  </ul>
+  <button class="hamburger" id="hamBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileNav">
+  <button class="mobile-close" id="mobileClose">✕</button>
+  <a href="#story"    onclick="closeNav()">Our Story</a>
+  <a href="#details"  onclick="closeNav()">Details</a>
+  <a href="#attire"   onclick="closeNav()">Attire</a>
+  <a href="#rsvp"     onclick="closeNav()">RSVP</a>
+  <a href="#party"    onclick="closeNav()">Wedding Party</a>
+  <a href="#faq"      onclick="closeNav()">FAQ</a>
+  <a href="#registry" onclick="closeNav()">Registry</a>
+  <a href="#travel"   onclick="closeNav()">Travel</a>
+  <a href="#gallery"  onclick="closeNav()">Gallery</a>
+</div>
+
+<!-- CAROUSEL HERO -->
+<section id="hero">
+  <div class="hero-corner tl"></div>
+  <div class="hero-corner tr"></div>
+  <div class="hero-corner bl"></div>
+  <div class="hero-corner br"></div>
+
+  <div class="carousel-track" id="carouselTrack">
+    <div class="carousel-slide active">
+      <img src="image1.jpeg" class="slide-img" />
+    </div>
+    <div class="carousel-slide">
+      <img src="image2.jpg" class="slide-img" />
+    </div>
+    <div class="carousel-slide">
+      <img src="image3.jpg" class="slide-img" />
+    </div>
+    <div class="carousel-slide">
+      <img src="image4.jpg" class="slide-img" />
+    </div>
+  </div>
+
+  <!-- Text overlay — sits above all slides -->
+  <div class="hero-overlay">
+    <p class="hero-eyebrow">You + Me = Forever &nbsp;·&nbsp; Future Mr. & Mrs. Harris</p>
+    <h1 class="hero-names">
+      Tomneshia
+      <span class="script-and">&</span>
+      Dominique
+    </h1>
+    <div class="hero-rule"></div>
+    <p class="hero-date">April 3, 2027 &nbsp;·&nbsp; Ceremony & Reception</p>
+    <p class="hero-hashtag">#2Hands2Harris</p>
+  </div>
+
+  <div class="carousel-dots" id="carouselDots">
+    <button class="dot active" onclick="goToSlide(0)"></button>
+    <button class="dot" onclick="goToSlide(1)"></button>
+    <button class="dot" onclick="goToSlide(2)"></button>
+    <button class="dot" onclick="goToSlide(3)"></button>
+    <button class="dot" onclick="goToSlide(4)"></button>
+  </div>
+
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- OUR STORY -->
+<section id="story">
+  <div class="container">
+    <div class="story-grid">
+      <div class="story-img-wrap fade-up">
+        <div class="story-img-frame">
+          <div class="story-img-placeholder">[ Photo Here ]</div>
+        </div>
+      </div>
+      <div class="story-text fade-up">
+        <span class="label">Our Story</span>
+        <h2 class="heading">A love written<br><em>in the stars</em></h2>
+        <div class="gold-bar"></div>
+        <p class="body-text"><strong>Tomneshia and Dominique</strong> are the kind of love story you feel the moment you see them together — effortless, electric, and completely meant to be.</p>
+        <p class="body-text">What started as something undeniable quickly became a partnership built on real love, deep loyalty, and a lifetime of moments worth celebrating.</p>
+        <p class="body-text">After years of growing together, Dominique knew exactly what he had to do — and when he asked, she said yes. Now they're ready to make it official in front of everyone they love.</p>
+        <p class="story-quote">Meet the Harrises. ✦</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EVENT DETAILS -->
+<section id="details">
+  <div class="container">
+    <div class="details-header fade-up">
+      <span class="label light">Save the Date</span>
+      <h2 class="heading light">The Big <em>Day</em></h2>
+      <div class="gold-bar center"></div>
+    </div>
+    <div class="fade-up">
+      <div class="event-card-single">
+        <div class="event-number">03</div>
+        <span class="event-tag">Saturday · April 3, 2027</span>
+        <h3 class="event-name">Ceremony & Reception</h3>
+        <div class="event-rows">
+          <div class="event-row"><span class="event-icon">◷</span><div class="event-row-text"><strong>Ceremony Begins</strong>5:00 PM — Please be seated by 4:45 PM</div></div>
+          <div class="event-row"><span class="event-icon">◷</span><div class="event-row-text"><strong>Guest Seating Opens</strong>4:30 PM</div></div>
+          <div class="event-row"><span class="event-icon">◉</span><div class="event-row-text"><strong>Venue</strong>To be announced</div></div>
+          <div class="event-row"><span class="event-icon">◈</span><div class="event-row-text">Black tie optional · Earthy tones encouraged for guests</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ATTIRE -->
+<section id="attire">
+  <div class="container">
+    <div class="attire-inner fade-up">
+      <span class="label">Dress Code</span>
+      <h2 class="heading">What to <em>Wear</em></h2>
+      <div class="gold-bar center"></div>
+      <p class="attire-desc">
+        We kindly request our guests to wear formal black-tie attire in earthy tones to complement our elegant evening celebration. Thank you for honoring our vision — your presence means the world to us.
+      </p>
+      <div class="palette-row">
+        <div class="swatch-item"><div class="swatch sw-soft-peach"></div><span class="swatch-name">Soft Peach</span></div>
+        <div class="swatch-item"><div class="swatch sw-clay"></div><span class="swatch-name">Clay</span></div>
+        <div class="swatch-item"><div class="swatch sw-sage"></div><span class="swatch-name">Spring Sage</span></div>
+        <div class="swatch-item"><div class="swatch sw-olive"></div><span class="swatch-name">Olive</span></div>
+        <div class="swatch-item"><div class="swatch sw-russet"></div><span class="swatch-name">Russet</span></div>
+      </div>
+      <p class="attire-note"><em>Cream is reserved for the bride</em></p>
+    </div>
+  </div>
+</section>
+
+<!-- RSVP -->
+<section id="rsvp">
+  <div class="container">
+    <div class="rsvp-grid">
+      <div class="fade-up">
+        <span class="label">Kindly Reply</span>
+        <h2 class="heading">Will you<br><em>join us?</em></h2>
+        <div class="gold-bar"></div>
+        <p class="body-text">We can't wait to celebrate with you. Please let us know if you'll be joining us so we can make everything perfect for our big day.</p>
+        <p class="body-text">Your response helps with seating, catering, and all the details that make the day special.</p>
+        <span class="deadline-badge">RSVP by May 31, 2027</span>
+      </div>
+      <div class="fade-up">
+        <form class="rsvp-form" id="rsvpForm">
+          <div class="form-row">
+            <div class="form-group"><label>First Name</label><input type="text" name="firstName" required placeholder="First name"/></div>
+            <div class="form-group"><label>Last Name</label><input type="text" name="lastName" required placeholder="Last name"/></div>
+          </div>
+          <div class="form-group"><label>Email Address</label><input type="email" name="email" required placeholder="your@email.com"/></div>
+          <div class="form-group">
+            <label>Will you be attending?</label>
+            <select name="attending" id="attendingSelect" required>
+              <option value="" disabled selected>Select an option</option>
+              <option value="yes">Joyfully accepts ✓</option>
+              <option value="no">Regretfully declines</option>
+            </select>
+          </div>
+          <div class="form-group" id="guestGroup" style="display:none">
+            <label>Number of guests (including yourself)</label>
+            <select name="guestCount">
+              <option value="1">1 — Just me</option>
+              <option value="2">2 — Me + 1</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Dietary restrictions or special notes</label><textarea name="dietary" placeholder="Any dietary needs, allergies, or requests..."></textarea></div>
+          <button type="submit" class="btn-submit">Send RSVP</button>
+        </form>
+        <div class="form-success" id="formSuccess">
+          <h3>You're on the list ✦</h3>
+          <p>Thank you so much! We can't wait to celebrate with you on April 3rd.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WEDDING PARTY -->
+<section id="party">
+  <div class="container">
+    <div class="fade-up" style="text-align:center">
+      <span class="label light">The Crew</span>
+      <h2 class="heading light">Wedding <em>Party</em></h2>
+      <div class="gold-bar center"></div>
+    </div>
+    <div class="party-cols fade-up">
+      <!-- BRIDE'S SIDE -->
+      <div>
+        <span class="party-col-title">Bride's Side</span>
+        <ul class="party-list">
+          <li><span class="party-person">Alicia</span><span class="party-title-role honor">Matron of Honor</span></li>
+          <li><span class="party-person">Va'keria</span><span class="party-title-role honor">Maid of Honor</span></li>
+          <li><span class="party-person">Berneshia</span><span class="party-title-role">Bridesmaid</span></li>
+          <li><span class="party-person">Courtney</span><span class="party-title-role">Bridesmaid</span></li>
+          <li><span class="party-person">Princess</span><span class="party-title-role">Bridesmaid</span></li>
+          <li><span class="party-person">Merlisa</span><span class="party-title-role">Bridesmaid</span></li>
+          <li><span class="party-person">Desteny</span><span class="party-title-role">Bridesmaid</span></li>
+          <li><span class="party-person">Jessica</span><span class="party-title-role">Bridesmaid</span></li>
+          <li><span class="party-person">Ke'Sharia</span><span class="party-title-role">Bridesmaid</span></li>
+          <li><span class="party-person">Takya</span><span class="party-title-role">Bridesmaid</span></li>
+        </ul>
+      </div>
+      <!-- GROOM'S SIDE -->
+      <div>
+        <span class="party-col-title">Groom's Side</span>
+        <ul class="party-list">
+          <li><span class="party-person">Chrishun</span><span class="party-title-role honor">Best Man</span></li>
+          <li><span class="party-person">Antonio</span><span class="party-title-role">Groomsman</span></li>
+          <li><span class="party-person">Courtavious</span><span class="party-title-role">Groomsman</span></li>
+          <li><span class="party-person">Devin</span><span class="party-title-role">Groomsman</span></li>
+          <li><span class="party-person">Nicholas</span><span class="party-title-role">Groomsman</span></li>
+          <li><span class="party-person">Kenny</span><span class="party-title-role">Groomsman</span></li>
+          <li><span class="party-person">Keshawn</span><span class="party-title-role">Groomsman</span></li>
+          <li><span class="party-person">Richard</span><span class="party-title-role">Groomsman</span></li>
+          <li><span class="party-person">Danielle</span><span class="party-title-role">Groomsman</span></li>
+          <li><span class="party-person">Jeremiah</span><span class="party-title-role">Groomsman</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="container">
+    <div class="fade-up">
+      <span class="label">Good to Know</span>
+      <h2 class="heading">Frequently Asked <em>Questions</em></h2>
+      <div class="gold-bar"></div>
+    </div>
+    <div class="faq-list fade-up">
+      <div class="faq-item">
+        <button class="faq-q">
+          <span class="faq-q-text">What time should I arrive at the ceremony?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><p>The ceremony will start promptly at 5:00 PM. Please aim to arrive no later than 4:45 PM to allow for seating and getting settled. Guest seating will start at 4:30 PM. We also recommend considering traffic and travel time to ensure you don't miss any part of the celebration. We look forward to seeing you there!</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">
+          <span class="faq-q-text">Can I bring a date?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><p>Unfortunately, we can't accommodate plus-ones due to limited space, unless they are explicitly mentioned in your invitation. We appreciate your understanding, and we are so excited to celebrate with you!</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">
+          <span class="faq-q-text">Can I take pictures?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><p>Our ceremony is unplugged and we wish to maintain its solemnity. We kindly ask that all guests refrain from taking pictures or videos during the wedding ceremony. Please avoid blocking the view of our professional photographer and videographer who will be capturing every moment. We promise to share the photos with you after the wedding. Once we are announced husband and wife, feel free to take as many pictures and videos as you'd like! Pictures are also welcome during cocktail hour and the reception.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">
+          <span class="faq-q-text">What is the dress code?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><p>We kindly request our guests to wear formal black-tie attire in earthy tones to complement our elegant evening celebration. Please refer to the color palette in the Attire section above. Cream is reserved for the bride. Thank you for honoring our vision!</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">
+          <span class="faq-q-text">Is parking available?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><p>Yes! Parking is available at the venue.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">
+          <span class="faq-q-text">Will there be an open bar?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><p>Yes! We'll have an open bar, so feel free to raise a glass and celebrate with us throughout the evening.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">
+          <span class="faq-q-text">When do I need to RSVP?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><p>Please RSVP no later than May 31st. This will ensure we can finalize our arrangements and reserve a spot for you to celebrate with us! After May 31st, unfortunately we will not be able to accommodate seating per our venue's request.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REGISTRY -->
+<section id="registry">
+  <div class="container" style="text-align:center">
+    <div class="fade-up">
+      <span class="label">Gifts</span>
+      <h2 class="heading">Registry</h2>
+      <div class="gold-bar center"></div>
+      <p class="registry-sub">Your presence at our celebration is the greatest gift of all. For those who wish to honor us with a gift, registry details will be shared here soon.</p>
+      <div class="registry-btns"><a href="#" class="btn-reg primary">Registry Coming Soon</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- TRAVEL -->
+<section id="travel">
+  <div class="container">
+    <div class="fade-up">
+      <span class="label">Plan Your Visit</span>
+      <h2 class="heading">Travel & <em>Accommodations</em></h2>
+      <div class="gold-bar"></div>
+    </div>
+    <div class="travel-grid fade-up">
+      <div class="travel-card"><span class="travel-icon">✈</span><h3>Getting Here</h3><p>Flight and transportation details will be added once the venue is finalized. Check back soon for airport recommendations and directions.</p></div>
+      <div class="travel-card"><span class="travel-icon">◫</span><h3>Hotel Block</h3><p>We're securing a room block at a nearby hotel for our guests at a special rate. Booking information will be posted here as soon as it's ready.</p></div>
+      <div class="travel-card"><span class="travel-icon">◎</span><h3>Things to Do</h3><p>We'll share our favorite local spots for dining, sightseeing, and fun so you can make the most of your trip celebrating with us.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="container">
+    <div class="fade-up" style="text-align:center">
+      <span class="label light">The Shoot</span>
+      <h2 class="heading light">Gallery</h2>
+      <div class="gold-bar center"></div>
+    </div>
+    <div class="gallery-grid fade-up">
+      <div class="g-item wide"><div class="g-placeholder g1">Engagement Photo</div></div>
+      <div class="g-item"><div class="g-placeholder g2">Photo 2</div></div>
+      <div class="g-item"><div class="g-placeholder g3">Photo 3</div></div>
+      <div class="g-item"><div class="g-placeholder g4">Photo 4</div></div>
+      <div class="g-item wide"><div class="g-placeholder g5">Photo 5</div></div>
+    </div>
+    <p class="gallery-caption">More photos coming soon ✦</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-rule"></div>
+  <p class="footer-names">Tomneshia & Dominique</p>
+  <p class="footer-hash">#2Hands2Harris</p>
+  <p class="footer-copy">April 3, 2027 &nbsp;·&nbsp; With Love</p>
+</footer>
+
+<script>
+  // Nav scroll
+  window.addEventListener('scroll', () => {
+    document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  // Mobile menu
+  document.getElementById('hamBtn').addEventListener('click', () => document.getElementById('mobileNav').classList.add('open'));
+  document.getElementById('mobileClose').addEventListener('click', closeNav);
+  function closeNav() { document.getElementById('mobileNav').classList.remove('open'); }
+
+  // Scroll reveal
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // RSVP guest toggle
+  document.getElementById('attendingSelect').addEventListener('change', function() {
+    document.getElementById('guestGroup').style.display = this.value === 'yes' ? 'flex' : 'none';
+  });
+
+  // RSVP submit
+  document.getElementById('rsvpForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const f = this;
+    const data = {
+      timestamp: new Date().toISOString(),
+      firstName: f.firstName.value, lastName: f.lastName.value,
+      email: f.email.value, attending: f.attending.value,
+      guestCount: f.guestCount?.value || 'N/A', dietary: f.dietary.value || 'None'
+    };
+    const SHEETS_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+    try {
+      if (SHEETS_URL !== 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
+        await fetch(SHEETS_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+      }
+    } catch(err) {}
+    f.style.display = 'none';
+    document.getElementById('formSuccess').style.display = 'block';
+  });
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-q').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.parentElement;
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    });
+  });
+
+  // ── CAROUSEL ──
+  const slides = document.querySelectorAll('.carousel-slide');
+  const dots = document.querySelectorAll('.dot');
+  const track = document.getElementById('carouselTrack');
+  let current = 0;
+  let autoTimer;
+
+  function goToSlide(index) {
+    slides[current].classList.remove('active');
+    dots[current].classList.remove('active');
+    current = index;
+    slides[current].classList.add('active');
+    dots[current].classList.add('active');
+    track.style.transform = `translateX(-${current * 100}%)`;
+    resetTimer();
+  }
+
+  function nextSlide() {
+    goToSlide((current + 1) % slides.length);
+  }
+
+  function resetTimer() {
+    clearInterval(autoTimer);
+    autoTimer = setInterval(nextSlide, 4500);
+  }
+
+  // Kick off auto-play
+  autoTimer = setInterval(nextSlide, 4500);
+
+  // Touch/swipe support
+  let touchStartX = 0;
+  const heroEl = document.getElementById('hero');
+  heroEl.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+  heroEl.addEventListener('touchend', e => {
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) diff > 0 ? nextSlide() : goToSlide((current - 1 + slides.length) % slides.length);
+  });
+</script>
+</body>
+</html>
