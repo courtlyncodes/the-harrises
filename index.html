@@ -378,19 +378,29 @@
 
   /* ── GALLERY ── */
   #gallery { background: var(--off-black); padding-bottom: 6rem; }
-  .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-top: 3rem; }
-  .g-item { overflow: hidden; position: relative; aspect-ratio: 1; cursor: pointer; }
-  .g-item.wide { grid-column: span 2; aspect-ratio: 2/1; }
-  .g-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease; }
-  .g-item:hover img { transform: scale(1.04); }
-  .g-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.8rem; color: rgba(201,168,76,0.18); transition: transform 0.5s ease; }
-  .g-item:hover .g-placeholder { transform: scale(1.04); }
-  .g1 { background: linear-gradient(145deg, #1A1006, #2A1C08); }
-  .g2 { background: linear-gradient(145deg, #140E04, #1E1408); }
-  .g3 { background: linear-gradient(145deg, #0E0E0E, #1A1410); }
-  .g4 { background: linear-gradient(145deg, #1C1208, #0E0C08); }
-  .g5 { background: linear-gradient(145deg, #120E06, #201608); }
-  .gallery-caption { text-align: center; margin-top: 2rem; font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.9rem; color: rgba(201,168,76,0.28); }
+  .gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Creates two equal columns */
+  gap: 15px; /* Adjust spacing between photos */
+  margin-top: 30px;
+}
+
+.g-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures images fill the space without stretching */
+  display: block;
+}
+
+/* Landscape images span both columns */
+.g-item.wide {
+  grid-column: span 2;
+}
+
+/* Portrait images take up one column each */
+.g-item.portrait {
+  grid-column: span 1;
+}
 
   /* ── FOOTER ── */
   footer { background: var(--black); padding: 4rem 2rem; text-align: center; border-top: 1px solid rgba(201,168,76,0.1); }
@@ -425,6 +435,10 @@
     max-height: 70vh;
     object-fit: contain; 
     background-color: #000;
+  }
+
+  .g-item.wide, .g-item.portrait {
+    grid-column: span 2;
   }
   
   #hero {
@@ -795,14 +809,16 @@
       <h2 class="heading light">Gallery</h2>
       <div class="gold-bar center"></div>
     </div>
+
     <div class="gallery-grid fade-up">
-      <div class="g-item wide"><div class="g-placeholder g1">Engagement Photo</div></div>
-      <div class="g-item"><div class="g-placeholder g2">Photo 2</div></div>
-      <div class="g-item"><div class="g-placeholder g3">Photo 3</div></div>
-      <div class="g-item"><div class="g-placeholder g4">Photo 4</div></div>
-      <div class="g-item wide"><div class="g-placeholder g5">Photo 5</div></div>
+      <div class="g-item wide"><img src="image7.jpeg" alt="Landscape Photo 1"></div>
+      
+      <div class="g-item portrait"><img src="image6.jpg" alt="Portrait Photo 1"></div>
+      
+      <div class="g-item portrait"><img src="image9.jpeg" alt="Portrait Photo 2"></div>
+      
+      <div class="g-item wide"><img src="image8.jpeg" alt="Landscape Photo 2"></div>
     </div>
-    <p class="gallery-caption">More photos coming soon ✦</p>
   </div>
 </section>
 
