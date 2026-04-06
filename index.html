@@ -410,16 +410,15 @@
 /*  MOBILE */
 @media (max-width: 768px) {
   .slide-img {
-    height: 100%; /* Lets the image height be natural so nothing is cut off */
-    width: 100%;
-    object-fit: cover; 
-    object-position: 15% center !important;
+    height: auto; /* Lets the image height be natural so nothing is cut off */
+    max-height: 70vh;
+    object-fit: contain; 
+    background-color: #000;
   }
   
   #hero {
-    height: 55vh;
-    overflow: hidden;
-    background: #000;
+    height: auto;
+    min-height: 400px;
   }
 }
 </style>
