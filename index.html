@@ -407,18 +407,18 @@
     .swatch { width: 55px; height: 70px; }
     .hero-names { font-size: 2.8rem; }
 }
-/* THE FIX FOR MOBILE: Stop the cropping entirely on phones */
+/*  MOBILE */
 @media (max-width: 768px) {
   .slide-img {
-    height: auto; /* Lets the image height be natural so nothing is cut off */
-    max-height: 70vh; 
-    object-fit: contain; /* SHOWS THE ENTIRE IMAGE without any cropping */
-    background-color: #000; /* Adds a black background if the photo doesn't fill the whole width */
-    object-position: 70% center;
+    height: 100%; /* Lets the image height be natural so nothing is cut off */
+    width: 100%;
+    object-fit: cover;
+    object-position: 65% center;
   }
   
   #hero {
-    height: 80vh;
+    height: 85vh;
+    background: #000;
   }
 }
 </style>
